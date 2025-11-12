@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto IA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        /* Menú principal */
+        nav {
+            background-color: #2c3e50;
+            padding: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .menu {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .menu > li {
+            position: relative;
+        }
+
+        .menu > li > a {
+            display: block;
+            padding: 18px 25px;
+            color: #ecf0f1;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .menu > li > a:hover {
+            background-color: #34495e;
+        }
+
+        /* Submenús */
+        .submenu {
+            display: none;
+            position: absolute;
+            background-color: #34495e;
+            min-width: 200px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            list-style: none;
+            z-index: 1000;
+        }
+
+        .menu > li:hover .submenu {
+            display: block;
+        }
+
+        .submenu li a {
+            display: block;
+            padding: 12px 20px;
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .submenu li a:hover {
+            background-color: #2c3e50;
+        }
+
+        /* Contenido principal */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .content-section {
+            background-color: white;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        p {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        /* Carrusel de imágenes */
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: white;
+            font-weight: bold;
+        }
+
+        .carousel-item:nth-child(1) {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .carousel-item:nth-child(2) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .carousel-item:nth-child(3) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .carousel-item:nth-child(4) {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        /* Botones del carrusel */
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(44, 62, 80, 0.7);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            cursor: pointer;
+            font-size: 1.5em;
+            transition: background-color 0.3s;
+            border-radius: 4px;
+        }
+
+        .carousel-button:hover {
+            background-color: rgba(44, 62, 80, 0.9);
+        }
+
+        .carousel-button.prev {
+            left: 10px;
+        }
+
+        .carousel-button.next {
+            right: 10px;
+        }
+
+        /* Indicadores del carrusel */
+        .carousel-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .indicator.active {
+            background-color: white;
+        }
+
+        /* Pie de página */
+        footer {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-content p {
+            color: #bdc3c7;
+            margin-bottom: 10px;
+        }
+
+        .footer-links {
+            margin-top: 20px;
+        }
+
+        .footer-links a {
+            color: #3498db;
+            text-decoration: none;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #5dade2;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu {
+                flex-direction: column;
+            }
+
+            .submenu {
+                position: static;
+                display: none;
+            }
+
+            .menu > li:hover .submenu {
+                display: block;
+            }
+
+            .carousel {
+                height: 300px;
+            }
+
+            .carousel-item {
+                font-size: 2em;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Menú de navegación -->
+    <nav>
+        <ul class="menu">
+            <li>
+                <a href="#proyecto">Sobre el proyecto</a>
+                <ul class="submenu">
+                    <li><a href="#info">+ info</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#recursos">Recursos</a>
+                <ul class="submenu">
+                    <li><a href="#texto-ia">Texto con IA</a></li>
+                    <li><a href="#animacion-ia">Animación con IA</a></li>
+                    <li><a href="#podcast-ia">Podcast con IA</a></li>
+                    <li><a href="#videos-ia">Videos con IA</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#acerca">Acerca de</a>
+                <ul class="submenu">
+                    <li><a href="#contacto">Contacto</a></li>
+                    <li><a href="#creditos">Créditos</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container">
+        <div class="content-section">
+            <h1>Bienvenido al Proyecto</h1>
+            <p>Este es un sitio web diseñado con colores sobrios y una estructura clara. El proyecto se centra en explorar las capacidades de la inteligencia artificial en diversos campos creativos y comunicativos.</p>
+            <p>Navega por el menú superior para descubrir más sobre nuestro trabajo, los recursos disponibles y cómo ponerte en contacto con nosotros.</p>
+        </div>
+
+        <!-- Carrusel de imágenes -->
+        <div class="carousel">
+            <div class="carousel-inner" id="carouselInner">
+                <div class="carousel-item">Imagen 1</div>
+                <div class="carousel-item">Imagen 2</div>
+                <div class="carousel-item">Imagen 3</div>
+                <div class="carousel-item">Imagen 4</div>
+            </div>
+            <button class="carousel-button prev" onclick="moveCarousel(-1)">&#10094;</button>
+            <button class="carousel-button next" onclick="moveCarousel(1)">&#10095;</button>
+            <div class="carousel-indicators" id="indicators"></div>
+        </div>
+
+        <div class="content-section" style="margin-top: 30px;">
+            <h1>Innovación y Creatividad</h1>
+            <p>Nuestro proyecto combina tecnología de vanguardia con creatividad humana para producir contenido único y de alta calidad. Desde la generación de textos hasta la creación de videos, exploramos constantemente nuevas formas de utilizar la inteligencia artificial.</p>
+            <p>Te invitamos a explorar nuestros recursos y descubrir cómo la IA puede transformar tu trabajo creativo.</p>
+        </div>
+    </div>
+
+    <!-- Pie de página -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 Proyecto IA. Todos los derechos reservados.</p>
+            <p>Diseño sobrio y funcional para una experiencia óptima.</p>
+            <div class="footer-links">
+                <a href="#contacto">Contacto</a>
+                <a href="#creditos">Créditos</a>
+                <a href="#privacidad">Política de Privacidad</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Carrusel
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-item');
+        const totalSlides = slides.length;
+        const carouselInner = document.getElementById('carouselInner');
+        const indicatorsContainer = document.getElementById('indicators');
+
+        // Crear indicadores
+        for (let i = 0; i < totalSlides; i++) {
+            const indicator = document.createElement('div');
+            indicator.className = 'indicator';
+            if (i === 0) indicator.classList.add('active');
+            indicator.onclick = () => goToSlide(i);
+            indicatorsContainer.appendChild(indicator);
+        }
+
+        function updateCarousel() {
+            carouselInner.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Actualizar indicadores
+            const indicators = document.querySelectorAll('.indicator');
+            indicators.forEach((ind, idx) => {
+                ind.classList.toggle('active', idx === currentSlide);
+            });
+        }
+
+        function moveCarousel(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) {
+                currentSlide = totalSlides - 1;
+            } else if (currentSlide >= totalSlides) {
+                currentSlide = 0;
+            }
+            updateCarousel();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+        }
+
+        // Auto-play del carrusel
+        setInterval(() => {
+            moveCarousel(1);
+        }, 5000);
+    </script>
+</body>
+</html>
